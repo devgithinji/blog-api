@@ -1,13 +1,13 @@
 package com.densoft.blogapi.service;
 
 import com.densoft.blogapi.payload.PostDto;
+import com.densoft.blogapi.payload.PostResponse;
 
-import java.util.List;
 
 public interface PostService {
     PostDto createPost(PostDto postDto);
 
-    List<PostDto> getAllPosts();
+    PostResponse getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir);
 
     PostDto getPostById(long id);
 
