@@ -19,12 +19,11 @@ public class Post {
     private Long id;
     @Column(name = "title", nullable = false)
     private String title;
-    @Column(name = "description", columnDefinition = "TEXT",nullable = false)
+    @Column(name = "description", length = 500, nullable = false)
     private String description;
-    @Lob
-    @Column(name = "content",nullable = false)
+    @Column(name = "content", nullable = false, length = 2000)
     private String content;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 }
