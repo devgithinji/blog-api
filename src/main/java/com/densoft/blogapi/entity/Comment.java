@@ -20,7 +20,7 @@ public class Comment {
     private String name;
     @Column(name = "email")
     private String email;
-    @Column(name = "body")
+    @Column(name = "body",columnDefinition = "TEXT")
     private String body;
 
     @ManyToOne(fetch = FetchType.LAZY)
