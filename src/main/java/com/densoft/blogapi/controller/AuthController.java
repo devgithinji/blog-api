@@ -2,10 +2,12 @@ package com.densoft.blogapi.controller;
 
 import com.densoft.blogapi.entity.Role;
 import com.densoft.blogapi.entity.User;
+import com.densoft.blogapi.payload.JwtAuthResponse;
 import com.densoft.blogapi.payload.LoginDto;
 import com.densoft.blogapi.payload.SignUpDto;
 import com.densoft.blogapi.repository.RoleRepository;
 import com.densoft.blogapi.repository.UserRepository;
+import com.densoft.blogapi.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,12 +40,17 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
     @PostMapping("/login")
-    public ResponseEntity<String> authentication(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<JwtAuthResponse> authentication(@RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsernameOrEmail(), loginDto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("user signed-in successfully", HttpStatus.OK);
+        //get token from token provider
+        String token = jwtTokenProvider.generateToken(authentication);
+        return ResponseEntity.ok(new JwtAuthResponse(token));
     }
 
     @PostMapping("/signup")
