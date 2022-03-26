@@ -19,9 +19,10 @@ public class Post {
     private Long id;
     @Column(name = "title", nullable = false)
     private String title;
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", columnDefinition = "TEXT",nullable = false)
     private String description;
-    @Column(name = "content", nullable = false)
+    @Lob
+    @Column(name = "content",nullable = false)
     private String content;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL,orphanRemoval = true)
