@@ -8,6 +8,8 @@ import com.densoft.blogapi.payload.SignUpDto;
 import com.densoft.blogapi.repository.RoleRepository;
 import com.densoft.blogapi.repository.UserRepository;
 import com.densoft.blogapi.security.JwtTokenProvider;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.Collections;
 
+@Api(value = "Auth controller exposes signin and signup REST endpoints")
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
@@ -44,6 +47,7 @@ public class AuthController {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    @ApiOperation(value = "Endpoint to SignIn user to Blog app")
     @PostMapping("/login")
     public ResponseEntity<JwtAuthResponse> authentication(@Valid @RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsernameOrEmail(), loginDto.getPassword()));
@@ -54,6 +58,7 @@ public class AuthController {
         return ResponseEntity.ok(new JwtAuthResponse(token));
     }
 
+    @ApiOperation(value = "Endpoint to SignUp user to Blog app")
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpDto signUpDto) {
         if (userRepository.existsByUsername(signUpDto.getUsername())) {
